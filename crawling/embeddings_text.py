@@ -16,6 +16,10 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 print("openai_api_key_____",openai_api_key)
 openai.api_key=openai_api_key
 
+# Create a directory to store the csv files
+if not os.path.exists("processed"):
+        os.mkdir("processed")
+
 ################################################################################
 ### Step 1
 ################################################################################
