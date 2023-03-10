@@ -40,7 +40,7 @@ def remove_newlines(serie):
 texts=[]
 
 # Get all the text files in the text directory
-for file in os.listdir("text/" + domain + "/"):
+for file in os.listdir("../text/" + domain + "/"):
     # Open the file and read the text
     with open("text/" + domain + "/" + file, "r", encoding="UTF-8") as f:
         text = f.read()
