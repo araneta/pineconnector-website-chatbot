@@ -36,6 +36,7 @@ class Chatbot(APIView):
     # permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
+        print('recieve request')
         chathistory =  request.data.get('chathistory'), 
         answer = answer_question(chatHistory=chathistory, debug=False)
         send_data= {}
