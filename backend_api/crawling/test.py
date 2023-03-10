@@ -13,7 +13,7 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 print("openai_api_key_____",openai_api_key)
 openai.api_key=openai_api_key
 
-df=pd.read_csv('processed/embeddings.csv', index_col=0)
+df=pd.read_csv('../processed/embeddings.csv', index_col=0)
 print('end read')
 df['embeddings'] = df['embeddings'].apply(eval).apply(np.array)
 
@@ -84,7 +84,7 @@ def answer_question(
     try:
         # Create a completions using the questin and context
         response = openai.Completion.create(
-            prompt=f"Answer the question based on the context below, and if the question can't be answered based on the context, say \"Excuse me, but please inquire only about the website.\"\n\nContext: {context}\n\n---\n\nQuestion: {question}\nAnswer:",
+            prompt=f"Please answer the question based on the context below as systematically as possible, and if the question can't be answered based on the context, say \"Excuse me, but please inquire only about the website.\"\n\nContext: {context}\n\n---\n\nQuestion: {question}\nAnswer:",
             temperature=0,
             max_tokens=max_tokens,
             top_p=1,
@@ -102,9 +102,10 @@ def answer_question(
 ### Step 13
 ################################################################################
 questions = [
-    'What is the Unique ID for Janet Savoy?',
-    'When is the install date for Laura crook?',
-    'Is the permit submitted for Laura crook?'
+    'What is Syntax?',
+    'What is the difference between a monthly and annually subscription?',
+    'What is your refund policy?',
+    'Why is there a price or quote difference between TradingView and MetaTrader?'
 ]
 for question in questions:
-    print(answer_question(df, question=question, debug=False))
+    print(question, ': ',answer_question(df, question=question, debug=False))

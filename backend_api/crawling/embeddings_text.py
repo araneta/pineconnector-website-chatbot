@@ -17,8 +17,8 @@ print("openai_api_key_____",openai_api_key)
 openai.api_key=openai_api_key
 
 # Create a directory to store the csv files
-if not os.path.exists("processed"):
-        os.mkdir("processed")
+if not os.path.exists("../processed"):
+        os.mkdir("../processed")
 
 ################################################################################
 ### Step 1
@@ -53,7 +53,7 @@ df = pd.DataFrame(texts, columns = ['fname', 'text'])
 
 # Set the text column to be the raw text with the newlines removed
 df['text'] = df.fname + ". " + remove_newlines(df.text)
-df.to_csv('processed/scraped.csv')
+df.to_csv('../processed/scraped.csv')
 df.head()
 
 print('end scraped')
@@ -64,7 +64,7 @@ print('end scraped')
 # Load the cl100k_base tokenizer which is designed to work with the ada-002 model
 tokenizer = tiktoken.get_encoding("cl100k_base")
 
-df = pd.read_csv('processed/scraped.csv', index_col=0)
+df = pd.read_csv('../processed/scraped.csv', index_col=0)
 df.columns = ['title', 'text']
 
 # Tokenize the text and save the number of tokens to a new column
@@ -152,6 +152,6 @@ for x in pbar:
     pbar.set_description("Processing %s")
 df['embeddings']=embeddings
 # df['embeddings'] = df.text.apply(lambda x: openai.Embedding.create(input=x, engine='text-embedding-ada-002')['data'][0]['embedding'])
-df.to_csv('processed/embeddings.csv')
+df.to_csv('../processed/embeddings.csv')
 df.head()
 print('end embeddings')
