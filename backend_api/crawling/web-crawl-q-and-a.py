@@ -113,15 +113,15 @@ def crawl(url):
     seen = set([url])
 
     # Create a directory to store the text files
-    if not os.path.exists("text/"):
-            os.mkdir("text/")
+    if not os.path.exists("../text/"):
+            os.mkdir("../text/")
 
-    if not os.path.exists("text/"+local_domain+"/"):
-            os.mkdir("text/" + local_domain + "/")
+    if not os.path.exists("../text/"+local_domain+"/"):
+            os.mkdir("../text/" + local_domain + "/")
 
     # Create a directory to store the csv files
-    if not os.path.exists("processed"):
-            os.mkdir("processed")
+    if not os.path.exists("../processed"):
+            os.mkdir("../processed")
 
     # While the queue is not empty, continue crawling
     while queue:
@@ -131,7 +131,7 @@ def crawl(url):
         print(url) # for debugging and to see the progress
 
         # Save text from the url to a <url>.txt file
-        with open('text/'+local_domain+'/'+url[8:].replace("/", "_") + ".txt", "w", encoding="UTF-8") as f:
+        with open('../text/'+local_domain+'/'+url[8:].replace("/", "_") + ".txt", "w", encoding="UTF-8") as f:
 
             # Get the text from the URL using BeautifulSoup
             soup = BeautifulSoup(requests.get(url).text, "html.parser")
