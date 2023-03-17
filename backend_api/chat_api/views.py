@@ -62,7 +62,6 @@ def create_context(
 
     # Sort by distance and add the text to the context until the context is too long
     for i, row in df.sort_values('distances', ascending=True).iterrows():
-        
         # Add the length of the text to the current length
         cur_len += row['n_tokens'] + 4
         
@@ -92,6 +91,7 @@ def answer_question(
         Answer a question based on the most similar context from the dataframe texts
         """
         history = ""
+
         for chat in chatHistory[0]:
             if(chat['humanChat']):
                 history+=f"\nHuman Queston: {chat['chatContent']}"
@@ -106,7 +106,8 @@ def answer_question(
             print("Context:\n" + context)
             print("\n\n")
         # Create a completions using the questin and context
-        response = get_result_chatgptapi(history, context)
+        # response = get_result_chatgptapi(chatHistory[0], context)
+        response = get_result_from_gpt3(history, context)
         return response["answer"]
 
     except Exception as e:
@@ -115,14 +116,22 @@ def answer_question(
     
 
 def get_result_chatgptapi(history, context):
+    final_question = history[-1]['chatContent']
+    previous_question = ''
+    if(len(history)>=3):
+        previous_question=history[-3]['chatContent']
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": 'system', "content": "You are a kind and friendly assistant to introduce the website-docs.pineconnector.com"},
-            {"role": 'user', "content": history},
+            {"role": 'system', "content": "You are a kind and friendly assistant and chatbot to answer about general question and introduce the website-docs.pineconnector.com. Please answer only content needed."},
+            {"role": 'user', "content": final_question},
             {
                 "role": 'assistant',
-                "content": f"Please answer the question based on the context below as systematically as possible.\"\n{context}\n\n"
+                "content": context
+            },
+            {
+                "role": 'user',
+                "content": previous_question
             }
         ]
     )
@@ -133,12 +142,28 @@ def get_result_chatgptapi(history, context):
     }
 
 def rewrite_question(history):
-    return openai.Completion.create(
+    final_question = openai.Completion.create(
         model="text-davinci-003",
-        prompt=f"Check out the chat transcript below and rewrite final question as one question to include main details.\n---\nChatting History:\n{history}\n\n---\nNew Question: ",
+        prompt=f"Check out the chat below, and rewrite the last question into one question to cover the main points and make sense from that alone.\n---\nChatting History:\n{history}\n\n---\nNew Question: ",
         temperature=0.7,
         max_tokens=256,
         top_p=1,
         frequency_penalty=0,
         presence_penalty=0
     )["choices"][0]["text"].strip()
+    return final_question
+
+def get_result_from_gpt3(history,context):
+    response = openai.Completion.create(
+        model="text-davinci-003",
+        prompt=f"You are a kind and friendly assistant and chatbot to answer about general question and introduce the website-docs.pineconnector.com. Answer based below context.\n---\nContext:\n{context}\n---\nChatting History:\n{history}\nAnswer: ",
+        temperature=0.3,
+        max_tokens=1000,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0
+    )
+    return {
+        "answer": response["choices"][0]["text"].strip(),
+        'usage': response['usage'],
+    }

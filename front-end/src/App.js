@@ -5,8 +5,8 @@ import Axios from 'axios';
 
 import ChatComponent from './components/chat';
 import BotIcon from './assets/image/bot.png';
-import LogoIcon from './assets/image/logo.png';
-import HelloIcon from './assets/image/hello.png';
+// import LogoIcon from './assets/image/logo.png';
+// import HelloIcon from './assets/image/hello.png';
 
 import './App.css';
 
@@ -41,18 +41,18 @@ function App() {
 	const sendMessageSubmit = () => {
 		setLoading(true);
 
-		const messageHistory = [
+		let messageHistory = [
 			...messages,
 			{
 				chatContent: chatting_data,
 				humanChat: true,
 			},
 		];
+		messageHistory = messageHistory.slice(-5);
 		setMessages(messageHistory);
 
 		SendMessage({
-			chathistory:
-				messageHistory.length < 5 ? messageHistory : messageHistory.slice(-5),
+			chathistory: messageHistory,
 		})
 			.then((res) => {
 				// receiveMessage(res);
@@ -94,10 +94,10 @@ function App() {
 	return (
 		<div className="flex flex-col items-center justify-center w-screen min-h-screen bg-gray-100 text-gray-800 p-10 relative">
 			<div className="md:flex md:flex-col flex-grow w-full md:max-w-[40%] bg-white shadow-xl rounded-lg overflow-hidden">
-				<div className="flex justify-center border-b-2 py-2">
+				{/* <div className="flex justify-center border-b-2 py-2">
 					<img className="h-[50px]" src={LogoIcon} alt="logo"></img>
 					<img className="h-[50px]" src={HelloIcon} alt="hello"></img>
-				</div>
+				</div> */}
 				<div className="flex flex-col flex-grow p-4 overflow-auto md:h-0 h-[calc(100vh-14rem)]">
 					<ChatComponent
 						humanChat={false}
