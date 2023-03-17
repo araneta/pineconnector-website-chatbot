@@ -156,7 +156,7 @@ def rewrite_question(history):
 def get_result_from_gpt3(history,context):
     response = openai.Completion.create(
         model="text-davinci-003",
-        prompt=f"You are a kind and friendly assistant and chatbot to answer about general question and introduce the website-docs.pineconnector.com. Answer based below context. And if you have a url link, make it clickable with the html tag.\n---\nContext:\n{context}\n---\nChatting History:\n{history}\nAnswer: ",
+        prompt=f"You are a kind and friendly assistant and chatbot to answer about general question and introduce the website-docs.pineconnector.com. Answer based below context and next rules. \n- If there is a URL link, make it clickable with a title or html tag containing the words 'here'\n- If there is the code, put in <code> tag. \n---\nContext:\n{context}\n---\nChatting History:\n{history}\nAnswer: ",
         temperature=0.3,
         max_tokens=1000,
         top_p=1,
