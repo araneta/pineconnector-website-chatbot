@@ -31,6 +31,11 @@ def remove_newlines(serie):
     serie = serie.str.replace('  ', ' ')
     return serie
 
+def return_link(filename):
+    print(filename)
+    path = "/".join(str(filename).split("_"))
+    print(path)
+    return path
 
 ################################################################################
 ### Step 2
@@ -46,13 +51,13 @@ for file in os.listdir("../text/" + domain + "/"):
         text = f.read()
 
         # Omit the first 11 lines and the last 4 lines, then replace -, _, and #update with spaces.
-        texts.append((file[len(domain):-4].replace('-',' ').replace('_', ' ').replace('#update',''), text))
+        texts.append((file[:-4].replace('-',' ').replace('_', '/').replace('#update',''), text))
 
 # Create a dataframe from the list of texts
 df = pd.DataFrame(texts, columns = ['fname', 'text'])
 
 # Set the text column to be the raw text with the newlines removed
-df['text'] = "reference link: "+"/".join(str(df.fname).split("_")) + "." + remove_newlines(df.text)
+df['text'] = "reference link: " + df.fname + ". " + remove_newlines(df.text)
 df.to_csv('../processed/scraped.csv')
 df.head()
 
