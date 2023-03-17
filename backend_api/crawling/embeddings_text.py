@@ -52,7 +52,7 @@ for file in os.listdir("../text/" + domain + "/"):
 df = pd.DataFrame(texts, columns = ['fname', 'text'])
 
 # Set the text column to be the raw text with the newlines removed
-df['text'] = "reference link: "+"/".join(df.fname.split("_")) + "." + remove_newlines(df.text)
+df['text'] = "reference link: "+"/".join(str(df.fname).split("_")) + "." + remove_newlines(df.text)
 df.to_csv('../processed/scraped.csv')
 df.head()
 
