@@ -16,7 +16,7 @@ function ChatComponent(props) {
 							></img>
 						</div>
 						<div>
-							<div className="text-white p-3 rounded-r-lg rounded-bl-lg">
+							<div className="p-3 rounded-r-lg rounded-bl-lg">
 								<div className="text-sm">
 									{chatContent.split('\n').map((line, index) => {
 										return <div key={index}>{line}</div>;
@@ -27,7 +27,7 @@ function ChatComponent(props) {
 					</div>
 				</div>
 			) : (
-				<div className="group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 dark:bg-[#343541]">
+				<div className="group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 dark:bg-gray-800">
 					<div className="text-base gap-4 md:gap-6 md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0 m-auto">
 						<div className="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300">
 							<img src={BotIcon} alt="bot"></img>
@@ -35,7 +35,7 @@ function ChatComponent(props) {
 						<div>
 							<div className="p-3 rounded-r-lg rounded-bl-lg">
 								<div
-									className="text-sm text-gray-300"
+									className="text-sm"
 									dangerouslySetInnerHTML={{ __html: chatContent }}
 								/>
 							</div>
