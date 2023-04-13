@@ -4,14 +4,23 @@ import Axios from 'axios';
 // import { FaFly } from 'react-icons/fa';
 
 import ChatComponent from './components/chat';
+import MessageInput from './components/messageInput';
 
-import './assets/scss/app.scss';
+// import Drawn from './components/Drawn';
+// import QuestionAnswer from './contents/QuestionAnswer';
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+
+library.add(fab, fas, far);
 
 function SendMessage(data) {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const API_URL = process.env.REACT_APP_API_URL;
-			const response = await Axios.post(API_URL, data);
+			const response = await Axios.post(API_URL + '/chat', data);
 			resolve(response.data.answer);
 		} catch (error) {
 			reject(error);
@@ -30,13 +39,11 @@ function App() {
 	const onChangeMessage = (e) => {
 		const meassageValue = e.target.value;
 		set_chatting_data(meassageValue);
-		changeInputHeight(meassageValue);
+		changeInputHeight();
 	};
 
-	const changeInputHeight = (meassageValue) => {
-		// eslint-disable-next-line
-		const lineCount = (meassageValue.match(new RegExp('\n', 'g')) || []).length;
-		const height = 24 * (lineCount + 1);
+	const changeInputHeight = (textareaHeight) => {
+		const height = textareaHeight || textareaRef.current.scrollHeight;
 		textareaRef.current.style.height = height + 'px';
 		messageBoxRef.current.style.height = height + 16 + 'px';
 		bodyRef.current.style.paddingBottom = height + 30 + 'px';
@@ -85,25 +92,12 @@ function App() {
 			});
 
 		set_chatting_data('');
-		changeInputHeight('');
+		changeInputHeight(24);
 	};
 
 	let messageData = messages.map((message, index) => {
 		return <ChatComponent {...message} key={index} />;
 	});
-
-	// const receiveMessage = (botMessage) => {
-	// 	const messageHistory = [
-	// 		...messages,
-	// 		{
-	// 			chatContent: botMessage,
-	// 			humanChat: false,
-	// 		},
-	// 	];
-	// 	console.log('messages', messages);
-	// 	console.log('messageHistory', messageHistory);
-	// 	setMessages(messageHistory);
-	// };
 
 	return (
 		<div className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1">
@@ -117,44 +111,19 @@ function App() {
 					<ChatComponent humanChat={false} chatContent={'Typing...'} />
 				) : null}
 			</div>
-			<div className="fixed flex justify-center bottom-0 left-0 w-full border-t md:border-t-0 dark:border-white/20 md:border-transparent md:dark:border-transparent md:bg-vert-light-gradient bg-white dark:bg-gray-800 md:!bg-transparent dark:md:bg-vert-dark-gradient py-2">
-				<div
-					ref={messageBoxRef}
-					className="px-3 py-2 md:w-[700px] w-[calc(100%-6rem)] md:left-[calc(50%-350px)] left-[3rem] bg-gray-300 dark dark:bg-gray-700 rounded-lg h-[40px] max-h-[216px]"
-				>
-					<textarea
-						ref={textareaRef}
-						// className="flex items-center h-10 w-full rounded px-3 text-sm resize-none max:h-[300px] py-3 bg-transparent"
-						className="max-h-[200px] m-0 w-full resize-none border-0 bg-transparent pr-6 focus:outline-0 focus:ring-0 focus-visible:ring-0 dark:bg-transparent dark:text-white scrollbar-thumb-slate-500/50 scrollbar-track-slate-500/[0.16] scrollbar scrollbar-w-[8px] scrollbar-thumb-rounded scrollbar-track-rounded"
-						style={{ height: '24px' }}
-						placeholder="Type your message…"
-						onChange={onChangeMessage}
-						onKeyDownCapture={onMessageKeyDown}
-						value={chatting_data}
-					/>
-					<button
-						onClick={sendMessageSubmit}
-						className="absolute flex items-center justify-center p-1 rounded-md text-gray-500 bottom-2 right-6 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
-					>
-						<span className="p-1">
-							<svg
-								className="w-[14px] transform rotate-45 mr-[-5px] mt-[-5px]"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									strokeWidth="2"
-									d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-								></path>
-							</svg>
-						</span>
-					</button>
+			<MessageInput
+				messageBoxRef={messageBoxRef}
+				textareaRef={textareaRef}
+				onChangeMessage={onChangeMessage}
+				onMessageKeyDown={onMessageKeyDown}
+				chatting_data={chatting_data}
+				sendMessageSubmit={sendMessageSubmit}
+			/>
+			{/* <Drawn direction="" bgClickable>
+				<div className="h-full overflow-y-auto scrollbar-thumb-slate-500/50 scrollbar-track-slate-500/[0.16] scrollbar scrollbar-w-[8px] scrollbar-thumb-rounded scrollbar-track-rounded">
+					<QuestionAnswer />
 				</div>
-			</div>
+			</Drawn> */}
 		</div>
 	);
 }
