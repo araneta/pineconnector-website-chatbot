@@ -1,0 +1,71 @@
+.sd-chatbutton {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0px 0px 5px 0px black;
+  bottom: 40px;
+  right: 40px;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sd-chatbox {
+  position: fixed;
+  width: calc(100% - 50px);
+  max-width: 500px;
+  height: 60vh;
+  max-height: 600px;
+  /* bottom: calc(100% + 10px); */
+  /* bottom: 90px; */
+  right: 25px;
+  border-radius: 15px;
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.sd-chatbox::after {
+  right: 25px;
+  top: calc(100% - 1px);
+  border: solid transparent;
+  --tw-bg-opacity: 1;
+  border-top-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-width: 10px;
+  margin-left: -10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .sd-chatbox::after {
+    --tw-bg-opacity: 1;
+    border-top-color: rgb(31 41 55 / var(--tw-bg-opacity));
+  }
+
+  .sd-chatbox {
+    --tw-bg-opacity: 1;
+    background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+  }
+}
+
+.sd-chatbox iframe {
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0px 0px 16px 1px #00000036;
+}
+
+.sd-hidden {
+  display: none;
+}
+
+.sd-chat-icon {
+  width: 20px;
+  height: 20px;
+}
