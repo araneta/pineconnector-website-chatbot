@@ -58,7 +58,7 @@ function App() {
 	};
 
 	const sendMessageSubmit = () => {
-		if (e.target.value === '') return false;
+		if (chatting_data === '') return false;
 		setLoading(true);
 
 		let messageHistory = [
