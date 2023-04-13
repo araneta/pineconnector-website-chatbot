@@ -53,12 +53,12 @@ function App() {
 		if (e.shiftKey === false && e.which === 13) {
 			e.stopPropagation();
 			e.preventDefault();
-			if (e.target.value === '') return false;
 			sendMessageSubmit();
 		}
 	};
 
 	const sendMessageSubmit = () => {
+		if (e.target.value === '') return false;
 		setLoading(true);
 
 		let messageHistory = [
